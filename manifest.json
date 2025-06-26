@@ -1,0 +1,46 @@
+{
+  "manifest_version": 3,
+  "name": "Zenn Hack Extension",
+  "version": "0.1.0",
+  "description": "英単語学習アプリ用Chrome拡張機能 - ブラウザから直接単語を追加",
+
+  "permissions": ["storage", "activeTab"],
+
+  "host_permissions": [
+    "http://localhost:8000/*",
+    "https://zenn-hack-fast-api-app-896149003479.asia-northeast2.run.app/*"
+  ],
+
+  "action": {
+    "default_popup": "src/popup/index.html",
+    "default_title": "Zenn Hack Extension",
+    "default_icon": {
+      "16": "icons/icon-16.png",
+      "32": "icons/icon-32.png",
+      "48": "icons/icon-48.png",
+      "128": "icons/icon-128.png"
+    }
+  },
+
+  "background": {
+    "service_worker": "src/background/background.ts"
+  },
+
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["src/content/content.ts"]
+    }
+  ],
+
+  "content_security_policy": {
+    "extension_pages": "script-src 'self'; object-src 'self'; connect-src https://identitytoolkit.googleapis.com https://securetoken.googleapis.com http://localhost:8000 https://zenn-hack-fast-api-app-896149003479.asia-northeast2.run.app"
+  },
+
+  "icons": {
+    "16": "icons/icon-16.png",
+    "32": "icons/icon-32.png",
+    "48": "icons/icon-48.png",
+    "128": "icons/icon-128.png"
+  }
+}
