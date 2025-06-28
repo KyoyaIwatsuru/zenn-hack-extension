@@ -1,69 +1,47 @@
-# React + TypeScript + Vite
+# プロジェクト概要
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+このプロジェクトは、Web ブラウジング時に見つけた未知単語を学習用に登録できる Chrome 拡張機能です。
 
-Currently, two official plugins are available:
+主な機能:
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- ユーザー認証
+- 単語の登録
 
-## Expanding the ESLint configuration
+技術スタック:
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+- React: UI の構築
+- TypeScript: 型安全なコード
+- Vite: 高速な開発環境
+- Firebase: データの保存と認証
 
-```js
-export default tseslint.config([
-  globalIgnores(["dist"]),
-  {
-    files: ["**/*.{ts,tsx}"],
-    extends: [
-      // Other configs...
+## 環境構築と Chrome への読み込み手順
 
-      // Remove tseslint.configs.recommended and replace with this
-      ...tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      ...tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      ...tseslint.configs.stylisticTypeChecked,
+以下の手順に従って環境を構築し、Chrome に拡張機能を読み込むことができます。
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ["./tsconfig.node.json", "./tsconfig.app.json"],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-]);
-```
+### 環境構築
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+1. 必要な依存関係をインストールします。
 
-```js
-// eslint.config.js
-import reactX from "eslint-plugin-react-x";
-import reactDom from "eslint-plugin-react-dom";
+   ```bash
+   npm install
+   ```
 
-export default tseslint.config([
-  globalIgnores(["dist"]),
-  {
-    files: ["**/*.{ts,tsx}"],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs["recommended-typescript"],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ["./tsconfig.node.json", "./tsconfig.app.json"],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-]);
-```
+2. プロジェクトをビルドします。
+
+   ```bash
+   npm run build
+   ```
+
+### Chrome への読み込み
+
+1. ビルド後に生成された `dist` フォルダを確認します。
+2. Chrome ブラウザを開き、以下の URL にアクセスします。
+
+   ```
+   chrome://extensions/
+   ```
+
+3. 右上の「デベロッパーモード」をオンにします。
+4. 「パッケージ化されていない拡張機能を読み込む」をクリックし、`dist` フォルダを選択します。
+
+これで拡張機能が Chrome に読み込まれます。
