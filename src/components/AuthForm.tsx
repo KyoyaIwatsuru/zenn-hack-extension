@@ -1,6 +1,3 @@
-// Authentication form component for Chrome Extension
-// Firebase認証用のログイン・サインアップフォーム
-
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -26,6 +23,30 @@ type AuthFormData = z.infer<typeof authSchema>;
 interface AuthFormProps {
   onSuccess?: () => void;
 }
+
+// Firebaseエラーコードを日本語メッセージに変換
+const getFirebaseAuthErrorMessage = (errorCode: string): string => {
+  switch (errorCode) {
+    case "auth/email-already-in-use":
+      return "このメールアドレスは既に使用されています。";
+    case "auth/invalid-email":
+      return "無効なメールアドレスです。";
+    case "auth/operation-not-allowed":
+      return "メールアドレスとパスワードによる認証は有効ではありません。";
+    case "auth/weak-password":
+      return "パスワードが弱すぎます。6文字以上で設定してください。";
+    case "auth/user-disabled":
+      return "このユーザーアカウントは無効化されています。";
+    case "auth/user-not-found":
+      return "ユーザーが見つかりませんでした。";
+    case "auth/wrong-password":
+      return "パスワードが間違っています。";
+    case "auth/invalid-credential":
+      return "メールアドレスまたはパスワードが正しくありません。";
+    default:
+      return "認証中に不明なエラーが発生しました。";
+  }
+};
 
 export function AuthForm({ onSuccess }: AuthFormProps) {
   const [isSignUp, setIsSignUp] = useState(false);
@@ -68,9 +89,11 @@ export function AuthForm({ onSuccess }: AuthFormProps) {
     setShowPassword(!showPassword);
   };
 
+  const displayError = error ? getFirebaseAuthErrorMessage(error) : null;
+
   return (
-    <Card className="w-full max-w-md mx-auto">
-      <CardHeader className="space-y-1">
+    <Card className="w-full max-w-md mx-auto border-0 shadow-none">
+      <CardHeader className="space-y-1 px-2">
         <CardTitle className="text-2xl font-bold text-center text-custom">
           {isSignUp ? "アカウント作成" : "ログイン"}
         </CardTitle>
@@ -81,7 +104,7 @@ export function AuthForm({ onSuccess }: AuthFormProps) {
         </p>
       </CardHeader>
 
-      <CardContent className="space-y-4">
+      <CardContent className="space-y-4 px-2">
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
           {/* メールアドレス */}
           <div className="space-y-2">
@@ -142,11 +165,11 @@ export function AuthForm({ onSuccess }: AuthFormProps) {
           </div>
 
           {/* エラーメッセージ */}
-          {error && (
+          {displayError && (
             <div className="p-3 bg-red-sub border border-red rounded-md">
               <p className="text-sm text-red flex items-center gap-2">
                 <AlertCircle className="h-4 w-4" />
-                {error}
+                {displayError}
               </p>
             </div>
           )}
